@@ -47,7 +47,7 @@
         <br><br>
         <table border="0" align="center">
             <tr>
-                <td colspan="7" align="right"><a href="#">Registrar</a></td>
+                <td colspan="7" align="right"><a href="formNuevoInmueble.jsp">Registrar</a></td>
             </tr>
             <tr><td colspan="7"><hr></td></tr>
             <tr>
