@@ -1,6 +1,12 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="beans.bInmueble"%>
+<%@page import="java.util.Iterator"%>
 <%@page import="beans.tblUsuario"%>
 <%
     tblUsuario usuario = new tblUsuario();
+    Iterator<bInmueble> itInmuebles = (session.getAttribute("Inmuebles") != null)
+            ? (Iterator<bInmueble>) session.getAttribute("Inmuebles")
+            : (new ArrayList<bInmueble>()).iterator();
     if (session.getAttribute("Arrendador") == null) {
         response.sendRedirect("controlador  ?opc=1");
     } else {
@@ -14,6 +20,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Lista de Inmuebles</title>
+        <script src="script/script.js"></script>
     </head>
     <body>
         <table align="center">
@@ -47,17 +54,39 @@
         <br><br>
         <table border="0" align="center">
             <tr>
-                <td colspan="7" align="right"><a href="formNuevoInmueble.jsp">Registrar</a></td>
+                <td colspan="7" align="right"><a href="controlador?opc=31">Registrar</a></td>
             </tr>
             <tr><td colspan="7"><hr></td></tr>
             <tr>
                 <th>#</th>
+                <th>ID</th>
                 <th>Codigo</th>
                 <th>Nombre</th>
                 <th>Valor</th>
-                <th colspan="3">Acciones</th>
+                <th colspan="2">Acciones</th>
             </tr>
             <tr><td colspan="7"><hr></td></tr>
+                    <%
+                        int c = 1;
+                        for (Iterator it = itInmuebles; it.hasNext();) {
+                            bInmueble inmueble = (bInmueble) it.next();
+                    %>
+            <tr>
+                <td><%=inmueble.getIdInmueble()%></td>
+                <td><%=inmueble.getCodInmueble()%></td>
+                <td><%=inmueble.getNombre()%></td>
+                <td>S/.<%=inmueble.getValor()%></td>
+                <td><a href="controlador?opc=32&idInmueble=<%=inmueble.getIdInmueble()%>">Editar</a></td>
+                <td><form action="controlador" onsubmit="return eliminar()">
+                        <input type="submit" value="Eliminar">
+                        <input type="hidden" name="opc" value="33">
+                        <input type="hidden" name="idInmueble" value="<%=inmueble.getIdInmueble()%>">
+                    </form></td>
+            </tr>
+            <%
+                    c++;
+                }
+            %>
         </table>
     </body>
 </html>

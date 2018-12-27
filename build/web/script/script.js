@@ -1,3 +1,44 @@
+function validar4() {
+    var id = document.getElementById("txtId");
+    var nombre = document.getElementById("txtNombre");
+    var apellidos = document.getElementById("txtApellidos");
+    var telef = document.getElementById("txtTelef");
+    var dni = document.getElementById("txtDNI");
+
+    if (id.value.length === 0 || nombre.value.length === 0 || apellidos.value.length === 0
+            || telef.value.length === 0 || dni.value.length === 0) {
+        window.alert("Complete todos los campos!");
+        return false;
+    } else if (isNaN(id.value) || isNaN(dni.value) || isNaN(telef.value)) {
+        window.alert("Id, Dni y telefono deben ser valores númericos!");
+        return false;
+    } else if (telef.value.length !== 9 || dni.value.length !== 8) {
+        window.alert("Dni debe tener 8 digitos y Telefono 9!");
+        return false;
+    } else {
+        return confirm("¿Desea Guardar?");
+    }
+}
+
+function eliminar() {
+    return confirm("Se eliminará ¿Esta seguro?");
+}
+
+function validar3() {
+    var codigo = document.getElementById("txtCodigo");
+    var nombre = document.getElementById("txtNombre");
+    var precio = document.getElementById("txtValor");
+    if (codigo.value.length === 0 || nombre.value.length === 0 || precio.value.length === 0) {
+        window.alert("Complete todos los campos!");
+        return false;
+    } else if (isNaN(precio.value)) {
+        window.alert("El precio deben ser números!");
+        return false;
+    } else {
+        return confirm("¿Desea guardar?");
+    }
+}
+
 function validar2() {
     var nombre = document.getElementById("txtNombre");
     var apellidos = document.getElementById("txtApellidos");

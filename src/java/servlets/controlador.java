@@ -1,6 +1,10 @@
 package servlets;
 
+import beans.bArrendatario;
+import beans.bInmueble;
 import beans.tblUsuario;
+import datos.mArrendatario;
+import datos.mInmuebles;
 import datos.mUsuario;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,6 +28,8 @@ public class controlador extends HttpServlet {
             RequestDispatcher rd = null;
             HttpSession session = request.getSession();
             mUsuario modelUsuario = new mUsuario();
+            mInmuebles modelInmuebles = new mInmuebles();
+            mArrendatario modelArrendatario = new mArrendatario();
             switch (opc) {
                 case 1:
                     response.sendRedirect("index.html");
@@ -82,12 +88,134 @@ public class controlador extends HttpServlet {
                     }
                     break;
                 case 3:
-                    rd = request.getRequestDispatcher("listInmuebles.jsp");
-                    rd.forward(request, response);
+                    if (session.getAttribute("Arrendador") == null) {
+                        response.sendRedirect("controlador?opc=1");
+                    } else {
+                        List<bInmueble> list2 = modelInmuebles.inmuebles();
+                        rd = request.getRequestDispatcher("listInmuebles.jsp");
+                        session.setAttribute("Inmuebles", list2.iterator());
+                        rd.forward(request, response);
+                    }
+                    break;
+                case 31:
+                    if (session.getAttribute("Arrendador") == null) {
+                        response.sendRedirect("controlador?opc=1");
+                    } else {
+                        rd = request.getRequestDispatcher("formNuevoInmueble.jsp");
+                        rd.forward(request, response);
+                    }
+                    break;
+                case 311:
+                    if (session.getAttribute("Arrendador") == null) {
+                        response.sendRedirect("controlador?opc=1");
+                    } else {
+                        int id = Integer.parseInt(request.getParameter("txtId"));
+                        String codigo = request.getParameter("txtCodigo");
+                        String nombre = request.getParameter("txtNombre");
+                        int precio = Integer.parseInt(request.getParameter("txtValor"));
+                        bInmueble inmueble1 = new bInmueble(id, codigo, nombre, precio);
+                        if (modelInmuebles.insertar(inmueble1)) {
+                            response.sendRedirect("controlador?opc=3");
+                        }
+                    }
+                    break;
+                case 32:
+                    if (session.getAttribute("Arrendador") == null) {
+                        response.sendRedirect("controlador?opc=1");
+                    } else {
+                        int id = Integer.parseInt(request.getParameter("idInmueble"));
+                        List<bInmueble> list3 = modelInmuebles.seleccionar(id);
+                        if (list3.size() == 1) {
+                            rd = request.getRequestDispatcher("formEditInmueble.jsp");
+                            session.setAttribute("inmuebleSel", list3.get(0));
+                            rd.forward(request, response);
+                        } else {
+                            response.sendRedirect("controlador?opc=3");
+                        }
+                    }
+                    break;
+                case 321:
+                    if (session.getAttribute("Arrendador") == null) {
+                        response.sendRedirect("controlador?opc=1");
+                    } else {
+                        int id = Integer.parseInt(request.getParameter("txtId"));
+                        String codigo = request.getParameter("txtCodigo");
+                        String nombre = request.getParameter("txtNombre");
+                        int precio = Integer.parseInt(request.getParameter("txtValor"));
+                        bInmueble inmueble1 = new bInmueble(id, codigo, nombre, precio);
+                        if (modelInmuebles.modificar(inmueble1)) {
+                            response.sendRedirect("controlador?opc=3");
+                        } else {
+                            response.sendRedirect("controlador?opc=32&idInmueble=" + inmueble1.getIdInmueble());
+                        }
+                    }
                     break;
                 case 4:
-                    rd = request.getRequestDispatcher("listArrendatarios.jsp");
-                    rd.forward(request, response);
+                    if (session.getAttribute("Arrendador") == null) {
+                        response.sendRedirect("controlador?opc=1");
+                    } else {
+                        List<bArrendatario> list4 = modelArrendatario.arrendatarios();
+                        rd = request.getRequestDispatcher("listArrendatarios.jsp");
+                        session.setAttribute("Arrendatarios", list4.iterator());
+                        rd.forward(request, response);
+                    }
+                    break;
+                case 41:
+                    if (session.getAttribute("Arrendador") == null) {
+                        response.sendRedirect("controlador?opc=1");
+                    } else {
+                        rd = request.getRequestDispatcher("formNuevoArrendatario.jsp");
+                        rd.forward(request, response);
+                    }
+                    break;
+                case 411:
+                    if (session.getAttribute("Arrendador") == null) {
+                        response.sendRedirect("controlador?opc=1");
+                    } else {
+                        int id = Integer.parseInt(request.getParameter("txtId"));
+                        String nombre = request.getParameter("txtNombre");
+                        String apellidos = request.getParameter("txtApellidos");
+                        String telef = request.getParameter("txtTelef");
+                        String dni = request.getParameter("txtDNI");
+                        bArrendatario arrendatario = new bArrendatario(id, nombre, apellidos, dni, telef);
+                        if (modelArrendatario.insertar(arrendatario)) {
+                            response.sendRedirect("controlador?opc=4");
+                        } else {
+                            response.sendRedirect("controlador?opc=41");
+                        }
+                    }
+                    break;
+                case 42:
+                    if (session.getAttribute("Arrendador") == null) {
+                        response.sendRedirect("controlador?opc=1");
+                    } else {
+                        int id = Integer.parseInt(request.getParameter("idArrendatario"));
+                        List<bArrendatario> list5 = modelArrendatario.seleccionar(id);
+                        if (list5.size() == 1) {
+                            rd = request.getRequestDispatcher("formEditArrendatario.jsp");
+                            session.setAttribute("selArrendat", list5.get(0));
+                            rd.forward(request, response);
+                        } else {
+                            response.sendRedirect("controlador?opc=4");
+                        }
+                    }
+                    break;
+                case 421:
+                    if (session.getAttribute("Arrendador") == null) {
+                        response.sendRedirect("controlador?opc=1");
+                    } else {
+                        int id = Integer.parseInt(request.getParameter("txtId"));
+                        String nombre = request.getParameter("txtNombre");
+                        String apellidos = request.getParameter("txtApellidos");
+                        String telef = request.getParameter("txtTelef");
+                        String dni = request.getParameter("txtDNI");
+                        bArrendatario arrendatario = new bArrendatario(id, nombre, apellidos, dni, telef);
+                        if (modelArrendatario.modificar(arrendatario)) {
+                            response.sendRedirect("controlador?opc=4");
+                        } else {
+                            response.sendRedirect("controlador?opc=42&idArrendatario=" + arrendatario.getIdarrendatario());
+                        }
+                    }
                     break;
                 case 5:
                     rd = request.getRequestDispatcher("listContratos.jsp");

@@ -43,5 +43,20 @@
             </tr>
             <tr><th colspan="13" align="center"><hr></th></tr>
         </table>
+        <br><br>
+        <table align="center">
+            <tr><td colspan="8" align="right"><a href="#">Registro</a></td></tr>
+            <tr><td colspan="8"><hr></td></tr>
+            <tr>
+                <th>#</th>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Inmueble</th>
+                <th>Arrendatario</th>
+                <th colspan="2">Acciones</th>
+            </tr>
+            <tr><td colspan="8"><hr></td></tr>
+        </table>
     </body>
 </html>
